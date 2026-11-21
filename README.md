@@ -39,17 +39,24 @@ world news, as a newspaper front page.
 python3 main.py
 ```
 
-This renders `entry.png` (1024 × 1024). It needs Python 3 and Pillow
-(`pip install pillow`). Headline pictures are read from `illustrations/`
-and the map from `map.jpg` when present; if any asset file is missing,
-a programmatic drawing is used instead, so the program still exits 0.
+This renders `entry.png` (1024 × 1024). It needs Python 3 only — no
+third-party packages. The front page is embedded in `main.py` itself
+(base64), so the program writes the exact same bytes on every run, with
+or without any other file present. The image is written to
+`$MAKEFUN_OUTPUT_DIR/entry.png`, falling back to `/output/entry.png`,
+then to the script's own directory for local runs.
+
+If the embedded picture is ever unreadable, the program draws a
+simplified version of the same front page with a pure-stdlib PNG writer
+and a built-in 5x7 bitmap font, so it still exits 0 with a valid image.
 
 ## Files
 
-- `main.py` — the renderer (Pillow only, no network).
-- `illustrations/` — original headline drawings (Kyiv, Akvan, COP31).
-- `map.jpg` — the world map used behind the pins.
-- `entry.png` — the rendered front page.
+- `main.py` — the whole entry: standard library only, no network.
+- `entry.png` — the rendered front page (also embedded in `main.py`).
+- `illustrations/` — the original headline drawings (Kyiv, Akvan, COP31),
+  used to render the embedded picture; not needed at run time.
+- `map.jpg` — the world map used behind the pins; not needed at run time.
 
 ## Bounty
 
